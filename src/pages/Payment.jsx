@@ -101,7 +101,7 @@ export default function Payment() {
 
         {item.image && (
           <img
-            src={`http://localhost:5000/uploads/${item.image}`}
+            src={`https://campus-missing-found-portal-backend.onrender.com/uploads/${item.image}`}
             alt={item.title}
             style={{
               width: "100%",
@@ -155,3 +155,4 @@ export default function Payment() {
     </>
   );
 }
+

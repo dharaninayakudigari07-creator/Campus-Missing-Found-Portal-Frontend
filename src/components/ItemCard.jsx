@@ -13,7 +13,7 @@ export default function ItemCard({ item }) {
       {/* Image */}
       {item.image ? (
         <img
-          src={`http://localhost:5000/uploads/${item.image}`}
+          src={`https://campus-missing-found-portal-backend.onrender.com/uploads/${item.image}`}
           alt={item.title}
           className="item-image"
         />
@@ -87,3 +87,4 @@ export default function ItemCard({ item }) {
     </div>
   );
 }
+

@@ -76,7 +76,7 @@ export default function Reports() {
               <div>
                 {report.item.image ? (
                   <img
-                    src={`http://localhost:5000/uploads/${report.item.image}`}
+                    src={`https://campus-missing-found-portal-backend.onrender.com/uploads/${report.item.image}`}
                     alt={report.item.title}
                     style={{
                       width: "170px",
@@ -166,3 +166,4 @@ export default function Reports() {
     </>
   );
 }
+

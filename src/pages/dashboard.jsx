@@ -108,7 +108,7 @@ function Dashboard() {
       return image;
     }
 
-    return `http://localhost:5000/uploads/${image}`;
+    return `https://campus-missing-found-portal-backend.onrender.com/uploads/${image}`;
   };
 
   /* =====================================================
@@ -935,3 +935,4 @@ function Dashboard() {
 }
 
 export default Dashboard;
+

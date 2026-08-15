@@ -621,7 +621,7 @@ function ItemDetails() {
 
             {item.image ? (
               <img
-                src={`http://localhost:5000/uploads/${item.image}`}
+                src={`https://campus-missing-found-portal-backend.onrender.com/uploads/${item.image}`}
                 alt={
                   item.title ||
                   "Lost and found item"
@@ -978,7 +978,7 @@ function ItemDetails() {
 
                     {bestMatch.image ? (
                       <img
-                        src={`http://localhost:5000/uploads/${bestMatch.image}`}
+                        src={`https://campus-missing-found-portal-backend.onrender.com/uploads/${bestMatch.image}`}
                         alt={
                           bestMatch.title ||
                           "Matching item"
@@ -1472,3 +1472,4 @@ function ItemDetails() {
 }
 
 export default ItemDetails;
+

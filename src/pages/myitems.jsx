@@ -72,7 +72,7 @@ function MyItems() {
     }
 
     // Normal backend uploaded image
-    return `http://localhost:5000/uploads/${image}`;
+    return `https://campus-missing-found-portal-backend.onrender.com/uploads/${image}`;
   };
 
   // ==========================================
@@ -556,3 +556,4 @@ function MyItems() {
 }
 
 export default MyItems;
+
