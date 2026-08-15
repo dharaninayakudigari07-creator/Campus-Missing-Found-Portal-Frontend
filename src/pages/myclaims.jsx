@@ -18,7 +18,7 @@ import Navbar from "../components/Navbar";
 
 import "../styles/myclaims.css";
 
-const API_URL = "http://localhost:5000/api";
+const API_URL = "https://campus-missing-found-portal-backend.onrender.com/api";
 
 function MyClaims() {
   const navigate = useNavigate();
@@ -668,4 +668,6 @@ function MyClaims() {
 }
 
 export default MyClaims;
+
+
 

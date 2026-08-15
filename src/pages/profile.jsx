@@ -91,7 +91,7 @@ function Profile() {
 
         const response =
           await fetch(
-            "http://localhost:5000/api/auth/me",
+            "https://campus-missing-found-portal-backend.onrender.com/api/auth/me",
             {
               method: "GET",
 
@@ -1203,4 +1203,5 @@ function Profile() {
 }
 
 export default Profile;
+
 
