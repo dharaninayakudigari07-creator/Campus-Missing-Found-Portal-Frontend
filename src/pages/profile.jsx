@@ -23,7 +23,7 @@ import {
   FiShield,
 } from "react-icons/fi";
 
-import Navbar from "../components/Navbar";
+import Navbar from "../components/navbar";
 
 import "../styles/profile.css";
 

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import api from "../services/api";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/navbar";
 
 import "../styles/reportitem.css";
 
