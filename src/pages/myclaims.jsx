@@ -18,47 +18,159 @@ import Navbar from "../components/Navbar";
 
 import "../styles/myclaims.css";
 
-const API_URL = "https://campus-missing-found-portal-backend.onrender.com/api";
+const API_URL =
+  "https://campus-missing-found-portal-backend.onrender.com/api";
+
+const BACKEND_URL =
+  "https://campus-missing-found-portal-backend.onrender.com";
 
 function MyClaims() {
   const navigate = useNavigate();
 
   const [claims, setClaims] = useState([]);
-
   const [loading, setLoading] = useState(true);
-
   const [error, setError] = useState("");
-
   const [search, setSearch] = useState("");
-
   const [filter, setFilter] = useState("all");
 
+  // =====================================================
+  // GET TOKEN
+  // =====================================================
 
   const getToken = () => {
     return localStorage.getItem("token");
   };
 
+  // =====================================================
+  // CREATE CORRECT IMAGE URL
+  // =====================================================
+
+  const getImageUrl = (claim) => {
+    const rawImage =
+      claim?.item?.imageUrl ||
+      claim?.item?.image ||
+      claim?.imageUrl ||
+      claim?.image ||
+      null;
+
+    if (!rawImage) {
+      return null;
+    }
+
+    const image = String(rawImage).trim();
+
+    if (!image) {
+      return null;
+    }
+
+    // ---------------------------------------------------
+    // Already a full HTTPS URL
+    // ---------------------------------------------------
+
+    if (image.startsWith("https://")) {
+      return image;
+    }
+
+    // ---------------------------------------------------
+    // HTTP URL -> convert to HTTPS
+    // ---------------------------------------------------
+
+    if (image.startsWith("http://")) {
+      return image.replace(/^http:\/\//, "https://");
+    }
+
+    // ---------------------------------------------------
+    // /uploads/file.jpg
+    // ---------------------------------------------------
+
+    if (image.startsWith("/uploads/")) {
+      return `${BACKEND_URL}${image}`;
+    }
+
+    // ---------------------------------------------------
+    // uploads/file.jpg
+    // ---------------------------------------------------
+
+    if (image.startsWith("uploads/")) {
+      return `${BACKEND_URL}/${image}`;
+    }
+
+    // ---------------------------------------------------
+    // /file.jpg
+    // ---------------------------------------------------
+
+    if (image.startsWith("/")) {
+      return `${BACKEND_URL}/uploads${image}`;
+    }
+
+    // ---------------------------------------------------
+    // Normal filename
+    // Example:
+    // 1786779707773.jpg
+    // ---------------------------------------------------
+
+    return `${BACKEND_URL}/uploads/${image}`;
+  };
+
+  // =====================================================
+  // IMAGE ERROR HANDLER
+  // =====================================================
+
+  const handleImageError = (event) => {
+    console.error(
+      "CLAIM IMAGE FAILED:",
+      event.currentTarget.src
+    );
+
+    event.currentTarget.style.display = "none";
+
+    const wrapper =
+      event.currentTarget.parentElement;
+
+    if (!wrapper) {
+      return;
+    }
+
+    const existingFallback =
+      wrapper.querySelector(
+        ".claim-image-error"
+      );
+
+    if (existingFallback) {
+      return;
+    }
+
+    const fallback =
+      document.createElement("div");
+
+    fallback.className =
+      "claim-image-error";
+
+    fallback.innerHTML = `
+      <span>Image unavailable</span>
+    `;
+
+    wrapper.appendChild(fallback);
+  };
+
+  // =====================================================
+  // FETCH CLAIMS
+  // =====================================================
 
   const fetchClaims = useCallback(async () => {
-
     try {
-
       setLoading(true);
-
       setError("");
 
       const token = getToken();
 
-
       if (!token) {
-
         navigate("/login", {
           replace: true,
         });
 
         return;
       }
-
 
       const response = await fetch(
         `${API_URL}/reports/my-claims`,
@@ -72,11 +184,12 @@ function MyClaims() {
         }
       );
 
+      // -------------------------------------------------
+      // UNAUTHORIZED
+      // -------------------------------------------------
 
       if (response.status === 401) {
-
         localStorage.removeItem("token");
-
         localStorage.removeItem("user");
 
         navigate("/login", {
@@ -86,111 +199,156 @@ function MyClaims() {
         return;
       }
 
-
-      const data = await response.json();
-
+      const data =
+        await response.json();
 
       if (!response.ok) {
-
         throw new Error(
           data.message ||
-          "Unable to load your claims."
+            "Unable to load your claims."
         );
       }
 
+      // -------------------------------------------------
+      // API CAN RETURN ARRAY
+      // -------------------------------------------------
+
+      let receivedClaims = [];
 
       if (Array.isArray(data)) {
-
-        setClaims(data);
-
-      } else if (Array.isArray(data.claims)) {
-
-        setClaims(data.claims);
-
-      } else {
-
-        setClaims([]);
-
+        receivedClaims = data;
+      } else if (
+        Array.isArray(data.claims)
+      ) {
+        receivedClaims = data.claims;
+      } else if (
+        Array.isArray(data.reports)
+      ) {
+        receivedClaims = data.reports;
       }
 
-    } catch (err) {
+      // -------------------------------------------------
+      // DEBUG IMAGE URLS
+      // -------------------------------------------------
 
-      console.error(err);
+      console.log(
+        "MY CLAIMS RESPONSE:",
+        receivedClaims
+      );
+
+      receivedClaims.forEach(
+        (claim, index) => {
+          console.log(
+            `CLAIM ${index + 1} IMAGE DATA:`,
+            {
+              claimId: claim.id,
+              itemId:
+                claim.itemId ||
+                claim.item?.id,
+              image:
+                claim.item?.image,
+              imageUrl:
+                claim.item?.imageUrl,
+              finalImageUrl:
+                getImageUrl(claim),
+            }
+          );
+        }
+      );
+
+      setClaims(receivedClaims);
+
+    } catch (err) {
+      console.error(
+        "GET MY CLAIMS ERROR:",
+        err
+      );
 
       setError(
         err.message ||
-        "Unable to load your claims."
+          "Unable to load your claims."
       );
 
     } finally {
-
       setLoading(false);
-
     }
   }, [navigate]);
 
+  // =====================================================
+  // LOAD CLAIMS
+  // =====================================================
+
   useEffect(() => {
-    Promise.resolve().then(() => fetchClaims());
+    fetchClaims();
   }, [fetchClaims]);
 
+  // =====================================================
+  // STATUS
+  // =====================================================
 
   const getStatus = (claim) => {
-
     return (
-      claim.status ||
+      claim?.status ||
       "pending"
     ).toLowerCase();
   };
 
+  // =====================================================
+  // TITLE
+  // =====================================================
 
   const getTitle = (claim) => {
-
     return (
-      claim.item?.title ||
-      claim.item?.name ||
-      claim.itemTitle ||
-      claim.title ||
+      claim?.item?.title ||
+      claim?.item?.name ||
+      claim?.itemTitle ||
+      claim?.title ||
       "Claimed Item"
     );
   };
 
+  // =====================================================
+  // DESCRIPTION
+  // =====================================================
 
   const getDescription = (claim) => {
-
     return (
-      claim.item?.description ||
-      claim.description ||
+      claim?.item?.description ||
+      claim?.description ||
       "No description available."
     );
   };
 
+  // =====================================================
+  // LOCATION
+  // =====================================================
 
   const getLocation = (claim) => {
-
     return (
-      claim.item?.location ||
-      claim.location ||
+      claim?.item?.location ||
+      claim?.location ||
       "Location not available"
     );
   };
 
+  // =====================================================
+  // DATE
+  // =====================================================
 
   const getDate = (claim) => {
-
     const date =
-      claim.createdAt ||
-      claim.date ||
-      claim.claimDate;
-
+      claim?.createdAt ||
+      claim?.date ||
+      claim?.claimDate;
 
     if (!date) {
       return "Date not available";
     }
 
-
     try {
-
-      return new Date(date).toLocaleDateString(
+      return new Date(
+        date
+      ).toLocaleDateString(
         "en-IN",
         {
           day: "2-digit",
@@ -198,30 +356,17 @@ function MyClaims() {
           year: "numeric",
         }
       );
-
     } catch {
-
       return "Date not available";
-
     }
   };
 
+  // =====================================================
+  // FILTER CLAIMS
+  // =====================================================
 
-  const getImage = (claim) => {
-
-    return (
-      claim.item?.imageUrl ||
-      claim.item?.image ||
-      claim.imageUrl ||
-      claim.image ||
-      null
-    );
-  };
-
-
-  const filteredClaims = claims.filter(
-    (claim) => {
-
+  const filteredClaims =
+    claims.filter((claim) => {
       const title =
         getTitle(claim);
 
@@ -231,40 +376,41 @@ function MyClaims() {
       const status =
         getStatus(claim);
 
-
       const text =
         `${title} ${description} ${status}`
           .toLowerCase();
-
 
       const matchesSearch =
         text.includes(
           search.toLowerCase()
         );
 
-
       const matchesFilter =
         filter === "all" ||
         status === filter;
-
 
       return (
         matchesSearch &&
         matchesFilter
       );
-    }
-  );
+    });
 
+  // =====================================================
+  // RENDER
+  // =====================================================
 
   return (
     <div className="myclaims-page">
 
-      {/* COMMON NAVBAR */}
+      {/* =================================================
+          NAVBAR
+      ================================================= */}
 
       <Navbar />
 
-
-      {/* HEADER */}
+      {/* =================================================
+          HEADER
+      ================================================= */}
 
       <header className="myclaims-header">
 
@@ -284,7 +430,6 @@ function MyClaims() {
             </span>
           </button>
 
-
           <div className="claims-title-wrapper">
 
             <div className="claims-title-icon">
@@ -298,7 +443,8 @@ function MyClaims() {
               </h1>
 
               <p>
-                Track your submitted item recovery claims
+                Track your submitted item
+                recovery claims
               </p>
 
             </div>
@@ -309,13 +455,15 @@ function MyClaims() {
 
       </header>
 
-
-      {/* MAIN */}
+      {/* =================================================
+          MAIN
+      ================================================= */}
 
       <main className="myclaims-main">
 
-
-        {/* HERO */}
+        {/* =================================================
+            HERO
+        ================================================= */}
 
         <section className="claims-intro">
 
@@ -330,17 +478,18 @@ function MyClaims() {
             </h2>
 
             <p>
-              Track the status of your claims and view
-              information about items you have requested
-              to recover.
+              Track the status of your claims
+              and view information about items
+              you have requested to recover.
             </p>
 
           </div>
 
         </section>
 
-
-        {/* TOOLBAR */}
+        {/* =================================================
+            TOOLBAR
+        ================================================= */}
 
         <section className="claims-toolbar">
 
@@ -353,12 +502,13 @@ function MyClaims() {
               placeholder="Search claims..."
               value={search}
               onChange={(event) =>
-                setSearch(event.target.value)
+                setSearch(
+                  event.target.value
+                )
               }
             />
 
           </div>
-
 
           <div className="claims-filters">
 
@@ -376,7 +526,6 @@ function MyClaims() {
               All
             </button>
 
-
             <button
               type="button"
               className={`claims-filter ${
@@ -391,7 +540,6 @@ function MyClaims() {
               Pending
             </button>
 
-
             <button
               type="button"
               className={`claims-filter ${
@@ -405,7 +553,6 @@ function MyClaims() {
             >
               Approved
             </button>
-
 
             <button
               type="button"
@@ -423,7 +570,6 @@ function MyClaims() {
 
           </div>
 
-
           <button
             type="button"
             className="claims-refresh"
@@ -435,8 +581,9 @@ function MyClaims() {
 
         </section>
 
-
-        {/* ERROR */}
+        {/* =================================================
+            ERROR
+        ================================================= */}
 
         {error && (
 
@@ -461,8 +608,9 @@ function MyClaims() {
 
         )}
 
-
-        {/* LOADING */}
+        {/* =================================================
+            LOADING
+        ================================================= */}
 
         {loading && (
 
@@ -479,15 +627,17 @@ function MyClaims() {
             </h3>
 
             <p>
-              Please wait while we retrieve your claims.
+              Please wait while we retrieve
+              your claims.
             </p>
 
           </section>
 
         )}
 
-
-        {/* EMPTY */}
+        {/* =================================================
+            EMPTY
+        ================================================= */}
 
         {!loading &&
           !error &&
@@ -506,16 +656,18 @@ function MyClaims() {
               </h2>
 
               <p>
-                You haven't submitted any claims yet,
-                or no claims match your search.
+                You haven't submitted any
+                claims yet, or no claims match
+                your search.
               </p>
 
             </section>
 
           )}
 
-
-        {/* CLAIMS */}
+        {/* =================================================
+            CLAIMS GRID
+        ================================================= */}
 
         {!loading &&
           filteredClaims.length > 0 && (
@@ -529,8 +681,14 @@ function MyClaims() {
                     getStatus(claim);
 
                   const image =
-                    getImage(claim);
+                    getImageUrl(claim);
 
+                  console.log(
+                    "RENDER CLAIM:",
+                    claim.id,
+                    "IMAGE:",
+                    image
+                  );
 
                   return (
 
@@ -539,7 +697,9 @@ function MyClaims() {
                       key={claim.id}
                     >
 
-                      {/* IMAGE */}
+                      {/* ===================================
+                          IMAGE
+                      =================================== */}
 
                       <div className="claim-image-wrapper">
 
@@ -549,6 +709,15 @@ function MyClaims() {
                             src={image}
                             alt={getTitle(claim)}
                             className="claim-image"
+                            onError={
+                              handleImageError
+                            }
+                            onLoad={() =>
+                              console.log(
+                                "CLAIM IMAGE LOADED:",
+                                image
+                              )
+                            }
                           />
 
                         ) : (
@@ -565,7 +734,6 @@ function MyClaims() {
 
                         )}
 
-
                         <span
                           className={`claim-status claim-${status}`}
                         >
@@ -574,8 +742,9 @@ function MyClaims() {
 
                       </div>
 
-
-                      {/* CONTENT */}
+                      {/* ===================================
+                          CONTENT
+                      =================================== */}
 
                       <div className="claim-content">
 
@@ -583,16 +752,13 @@ function MyClaims() {
                           CLAIM #{claim.id}
                         </div>
 
-
                         <h3>
                           {getTitle(claim)}
                         </h3>
 
-
                         <p className="claim-description">
                           {getDescription(claim)}
                         </p>
-
 
                         <div className="claim-info">
 
@@ -604,7 +770,6 @@ function MyClaims() {
 
                         </div>
 
-
                         <div className="claim-info">
 
                           <FiCalendar />
@@ -615,26 +780,19 @@ function MyClaims() {
 
                         </div>
 
-
                         <button
                           type="button"
                           className="view-claim-button"
                           onClick={() => {
 
-                            if (
-                              claim.itemId
-                            ) {
+                            const itemId =
+                              claim.itemId ||
+                              claim.item?.id;
+
+                            if (itemId) {
 
                               navigate(
-                                `/item-details/${claim.itemId}`
-                              );
-
-                            } else if (
-                              claim.item?.id
-                            ) {
-
-                              navigate(
-                                `/item-details/${claim.item.id}`
+                                `/item-details/${itemId}`
                               );
 
                             }
@@ -653,7 +811,6 @@ function MyClaims() {
                     </article>
 
                   );
-
                 }
               )}
 
@@ -668,6 +825,3 @@ function MyClaims() {
 }
 
 export default MyClaims;
-
-
-
