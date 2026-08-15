@@ -14,7 +14,7 @@ import {
   FiLoader,
 } from "react-icons/fi";
 
-import Navbar from "../components/navbar";
+import Navbar from "../components/Navbar";
 
 import "../styles/myclaims.css";
 

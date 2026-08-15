@@ -14,7 +14,7 @@ import {
   FiArrowRight,
 } from "react-icons/fi";
 
-import Navbar from "../components/navbar";
+import Navbar from "../components/Navbar";
 import api from "../services/api";
 
 import "../styles/myitems.css";

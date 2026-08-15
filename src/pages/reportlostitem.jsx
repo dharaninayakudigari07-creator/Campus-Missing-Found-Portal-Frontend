@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
-import Navbar from "../components/navbar";
+import Navbar from "../components/Navbar";
 import "../styles/reportlostitem.css";
 
 function ReportLostItem() {

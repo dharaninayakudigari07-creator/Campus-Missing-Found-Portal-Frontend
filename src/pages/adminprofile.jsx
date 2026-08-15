@@ -19,7 +19,7 @@ import {
     FaCheckCircle
 } from "react-icons/fa";
 
-import AdminNavbar from "../components/adminnavbar";
+import AdminNavbar from "../components/AdminNavbar";
 
 import api from "../services/api";
 

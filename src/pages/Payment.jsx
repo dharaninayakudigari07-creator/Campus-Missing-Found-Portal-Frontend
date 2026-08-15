@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import Navbar from "../components/navbar";
+import Navbar from "../components/Navbar";
 import api from "../services/api";
 
 export default function Payment() {
