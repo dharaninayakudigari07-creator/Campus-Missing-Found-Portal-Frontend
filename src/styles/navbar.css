@@ -1,0 +1,585 @@
+/* =========================================================
+   NRI INSTITUTE OF TECHNOLOGY
+   AI ENABLED CAMPUS LOST & FOUND PORTAL
+   STUDENT NAVBAR
+========================================================= */
+
+/* =========================================================
+   GLOBAL RESET
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+}
+
+/* =========================================================
+   STUDENT NAVBAR
+========================================================= */
+
+.student-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 88px;
+
+    padding: 0 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #e5eaf2;
+
+    box-shadow:
+        0 5px 20px rgba(15, 42, 75, 0.10);
+
+    z-index: 99999;
+
+    margin: 0;
+}
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    flex-shrink: 0;
+
+    cursor: pointer;
+
+    text-decoration: none;
+
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-brand-icon {
+    width: 50px;
+    height: 50px;
+
+    border-radius: 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: linear-gradient(
+        135deg,
+        #0d47a1,
+        #2878e8
+    );
+
+    color: #ffffff;
+
+    box-shadow:
+        0 7px 18px rgba(20, 91, 190, 0.25);
+
+    flex-shrink: 0;
+}
+
+.navbar-brand-icon svg {
+    width: 27px;
+    height: 27px;
+
+    stroke-width: 2.5;
+}
+
+.navbar-brand-text {
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-brand-text h2 {
+    margin: 0;
+
+    color: #0b3268;
+
+    font-size: 19px;
+
+    line-height: 1.15;
+
+    font-weight: 900;
+
+    letter-spacing: -0.3px;
+
+    white-space: nowrap;
+}
+
+.navbar-brand-text span {
+    color: #65758c;
+
+    font-size: 10px;
+
+    line-height: 1.2;
+
+    font-weight: 700;
+
+    letter-spacing: 0.3px;
+
+    white-space: nowrap;
+}
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.navbar-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 6px;
+
+    height: 100%;
+
+    margin: 0;
+    padding: 0;
+}
+
+/* =========================================================
+   NAV ITEM
+========================================================= */
+
+.navbar-navigation .nav-item {
+    min-width: 78px;
+    height: 62px;
+
+    padding: 7px 10px;
+
+    border: 1px solid transparent;
+
+    border-radius: 13px;
+
+    background: transparent;
+
+    color: #7185a1;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    cursor: pointer;
+
+    font-family: inherit;
+
+    font-size: 11px;
+
+    line-height: 1.05;
+
+    font-weight: 800;
+
+    text-align: center;
+
+    text-decoration: none;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.navbar-navigation .nav-item svg {
+    width: 21px;
+    height: 21px;
+
+    flex-shrink: 0;
+
+    stroke-width: 2.4;
+}
+
+.navbar-navigation .nav-item:hover {
+    color: #1458aa;
+
+    background: #f2f7ff;
+
+    border-color: #e0ebfa;
+
+    transform: translateY(-1px);
+}
+
+.navbar-navigation .nav-item.active {
+    color: #0c3f86;
+
+    background: #f4f8ff;
+
+    border-color: #dce9f8;
+
+    box-shadow:
+        0 6px 16px rgba(15, 43, 80, 0.10);
+}
+
+.navbar-navigation .nav-item.active svg {
+    color: #1765c1;
+}
+
+/* =========================================================
+   PROFILE CIRCLE
+========================================================= */
+
+.navbar-profile-circle {
+    width: 48px;
+    height: 48px;
+
+    margin-left: 7px;
+
+    padding: 0;
+
+    border: 2px solid #cfe0f7;
+
+    border-radius: 50%;
+
+    background: #f4f8ff;
+
+    color: #1763bc;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    flex-shrink: 0;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.navbar-profile-circle svg {
+    width: 24px;
+    height: 24px;
+
+    stroke-width: 2.4;
+}
+
+.navbar-profile-circle:hover {
+    background: #eaf3ff;
+
+    border-color: #aac9f1;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 7px 18px rgba(20, 86, 165, 0.15);
+}
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+.navbar-logout {
+    min-width: 112px;
+    height: 46px;
+
+    margin-left: 8px;
+
+    padding: 0 16px;
+
+    border: 1px solid #f0b9be;
+
+    border-radius: 11px;
+
+    background: #fff7f7;
+
+    color: #c93640;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    cursor: pointer;
+
+    font-family: inherit;
+
+    font-size: 12px;
+
+    font-weight: 850;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.navbar-logout svg {
+    width: 19px;
+    height: 19px;
+
+    stroke-width: 2.4;
+}
+
+.navbar-logout:hover {
+    color: #ffffff;
+
+    background: #d83e48;
+
+    border-color: #d83e48;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 7px 18px rgba(216, 62, 72, 0.25);
+}
+
+/* =========================================================
+   DESKTOP PAGE OFFSET
+   Navbar = 88px
+========================================================= */
+
+.lost-page,
+.found-page,
+.myitems-page,
+.dashboard-page,
+.profile-page,
+.claims-page,
+.items-page {
+    padding-top: 88px;
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1200px) {
+
+    .student-navbar {
+        padding: 0 22px;
+    }
+
+    .navbar-brand-text h2 {
+        font-size: 17px;
+    }
+
+    .navbar-brand-text span {
+        font-size: 9px;
+    }
+
+    .navbar-navigation {
+        gap: 3px;
+    }
+
+    .navbar-navigation .nav-item {
+        min-width: 68px;
+
+        padding: 6px 7px;
+
+        font-size: 10px;
+    }
+
+    .navbar-navigation .nav-item svg {
+        width: 19px;
+        height: 19px;
+    }
+
+    .navbar-profile-circle {
+        width: 44px;
+        height: 44px;
+    }
+
+    .navbar-logout {
+        min-width: 90px;
+
+        padding: 0 11px;
+
+        font-size: 11px;
+    }
+}
+
+/* =========================================================
+   SMALL TABLET
+========================================================= */
+
+@media (max-width: 1000px) {
+
+    .student-navbar {
+        height: auto;
+
+        min-height: 82px;
+
+        padding: 12px 18px;
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 10px;
+    }
+
+    .navbar-brand {
+        justify-content: center;
+    }
+
+    .navbar-navigation {
+        width: 100%;
+
+        height: auto;
+
+        justify-content: center;
+
+        flex-wrap: wrap;
+
+        padding-bottom: 4px;
+    }
+
+    .navbar-navigation .nav-item {
+        min-height: 46px;
+    }
+
+    .lost-page,
+    .found-page,
+    .myitems-page,
+    .dashboard-page,
+    .profile-page,
+    .claims-page,
+    .items-page {
+        padding-top: 145px;
+    }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+
+    .student-navbar {
+        padding: 10px 12px;
+    }
+
+    .navbar-brand {
+        width: 100%;
+
+        justify-content: center;
+    }
+
+    .navbar-brand-icon {
+        width: 43px;
+        height: 43px;
+
+        border-radius: 12px;
+    }
+
+    .navbar-brand-icon svg {
+        width: 23px;
+        height: 23px;
+    }
+
+    .navbar-brand-text h2 {
+        font-size: 15px;
+    }
+
+    .navbar-brand-text span {
+        font-size: 8px;
+    }
+
+    .navbar-navigation {
+        display: grid;
+
+        grid-template-columns:
+            repeat(3, 1fr);
+
+        width: 100%;
+
+        gap: 5px;
+    }
+
+    .navbar-navigation .nav-item {
+        width: 100%;
+
+        min-width: 0;
+
+        height: 48px;
+
+        padding: 5px;
+
+        font-size: 9px;
+    }
+
+    .navbar-navigation .nav-item svg {
+        width: 17px;
+        height: 17px;
+    }
+
+    .navbar-profile-circle {
+        display: none;
+    }
+
+    .navbar-logout {
+        width: 100%;
+
+        height: 44px;
+
+        margin: 0;
+
+        grid-column: span 3;
+    }
+
+    .lost-page,
+    .found-page,
+    .myitems-page,
+    .dashboard-page,
+    .profile-page,
+    .claims-page,
+    .items-page {
+        padding-top: 245px;
+    }
+}
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 400px) {
+
+    .navbar-brand-text h2 {
+        font-size: 14px;
+    }
+
+    .navbar-brand-text span {
+        font-size: 8px;
+    }
+
+    .navbar-navigation .nav-item {
+        font-size: 8px;
+    }
+
+    .navbar-navigation .nav-item svg {
+        width: 16px;
+        height: 16px;
+    }
+}

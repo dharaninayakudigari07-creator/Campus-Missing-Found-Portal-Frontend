@@ -1,0 +1,25 @@
+.stats-card,
+.report-card,
+.quick-card,
+.premium-item-card{
+
+background:white;
+
+border-radius:20px;
+
+box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+transition:.3s;
+
+}
+
+.stats-card:hover,
+.report-card:hover,
+.quick-card:hover,
+.premium-item-card:hover{
+
+transform:translateY(-8px);
+
+box-shadow:0 20px 40px rgba(0,0,0,.12);
+
+}
